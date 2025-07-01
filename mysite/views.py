@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 def vue_index(request):
-        return render(request, "vue_index.html")
+        return render(request, "vue_build/index.html")
 
 def get_data(request):
     return JsonResponse([

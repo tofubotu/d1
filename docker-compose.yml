@@ -8,16 +8,17 @@ services:
       - GID=${GID}
     volumes:
       - ./frontend/dist/assets:/app/mysite/static
-      - ./frontend/dist/index.html:/app/mysite/templates/vue_index.html
+      - ./frontend/dist:/app/mysite/templates/vue_build
       - .:/app
 
   node:
     image: node:20
+    working_dir: /frontend
+    user: "${UID}:${GID}"
     environment:
       - UID=${UID}
       - GID=${GID}
-    working_dir: /frontend
     volumes:
       - ./frontend:/frontend
     command: >
-            sh -c "npm run build && chown -R ${UID:-1000}:${GID:-1000} /frontend/dist"
+      sh -c "npm run build"

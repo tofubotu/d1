@@ -1,0 +1,8 @@
+make install     - Install Django + Node dependencies inside containers
+make build       - Build Vue frontend (after clean)
+make start       - Start Django app and containers
+make dev         - Full cycle: clean → install → build → start
+make logs        - Tail docker container logs
+make clean       - Remove build artifacts, pycache, and Vue outputs
+make distclean   - Deep clean: remove Vue dist + node_modules
+
