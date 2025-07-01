@@ -1,0 +1,17 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "tabulator-tables": "^5.5.0",
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "vite": "^5.0.4",
+    "@vitejs/plugin-vue": "^5.0.4"
+  }
+}
+
