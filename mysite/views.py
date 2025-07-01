@@ -6,6 +6,7 @@ def vue_index(request):
 def get_data(request):
     return JsonResponse([
         { "id": 1, "name": "Tofu", "level": "Hacker" },
-        { "id": 2, "name": "Q", "level": "Support" },
+        { "id": 2, "name": "Mr. Dick", "level": "Support" },
+        { "id": 3, "name": "DildoKing", "level": "Cant live without him" },
     ], safe=False)
 

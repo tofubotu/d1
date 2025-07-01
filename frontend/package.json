@@ -6,8 +6,8 @@
     "build": "vite build"
   },
   "dependencies": {
-    "tabulator-tables": "^5.5.0",
-    "vue": "^3.3.4"
+    "vue": "^3.3.4",
+    "tabulator-tables": "^5.5.0"
   },
   "devDependencies": {
     "vite": "^5.0.4",
