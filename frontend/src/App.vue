@@ -1,8 +1,10 @@
 <template>
   <div id="app">
-    <h2>Demo Table: Tabulator + Vue 3</h2>
-    <button @click="downloadCSV">Download CSV</button>
-    <div ref="table" style="margin-top: 1rem;"></div>
+    <h2>Vue + Tabulator Demo</h2>
+    <div style="margin-bottom: 1rem;">
+      <button @click="logSelected">Show Selected Rows</button>
+    </div>
+    <div ref="table"></div>
   </div>
 </template>
 
@@ -16,33 +18,27 @@ export default {
     const tableRef = ref(null)
     let tableInstance = null
 
-    const tableData = [
-      { id: 1, name: "Alice", age: 34, status: "Active", message: "This is a very long message that would usually overflow a normal table cell.\n AAAAAAAAAAAAAA\nAaaaaaaaaaaaa\naaaaaaaaaa" },
-      { id: 2, name: "Bob", age: 27, status: "Inactive", message: "Short msg." },
-      { id: 3, name: "Charlie", age: 29, status: "Pending", message: "Awaiting response from upper management, decision expected by Friday." },
-      { id: 4, name: "Diana", age: 41, status: "Active", message: "Can be contacted via Signal." },
-      { id: 5, name: "Eve", age: 22, status: "Banned", message: "Abusive behavior in channel." },
-      { id: 6, name: "Frank", age: 31, status: "Active", message: "Assigned to project Zeta." },
-      { id: 7, name: "Grace", age: 36, status: "Pending", message: "Interview scheduled for Tuesday morning." },
-      { id: 8, name: "Heidi", age: 28, status: "Inactive", message: "Out of office until next month." },
-    ]
+    // Generate 100 rows of sample data
+    const statuses = ["Active", "Inactive", "Pending", "Banned"]
+    const tableData = Array.from({ length: 100 }, (_, i) => ({
+      id: i + 1,
+      name: `User${i + 1}`,
+      age: 18 + (i % 40),
+      status: statuses[i % statuses.length],
+      message: `This is message number ${i + 1}, a bit longer for testing tooltip rendering and overflow handling.`
+    }))
 
     const columns = [
+      { title: "", formatter: "rowSelection", titleFormatter: "rowSelection", hozAlign: "center", headerSort: false, cellClick: (e, cell) => cell.getRow().toggleSelect(), width: 40 },
       { title: "ID", field: "id", width: 60, sorter: "number" },
       { title: "Name", field: "name", headerFilter: "input" },
       { title: "Age", field: "age", hozAlign: "center", sorter: "number" },
       {
-        title: "Status", field: "status", headerFilter: true, editor: "select",
-        editorParams: { values: ["Active", "Inactive", "Pending", "Banned"] },
+        title: "Status", field: "status", headerFilter: true,
         formatter: cell => {
           const value = cell.getValue()
-          const colors = {
-            Active: "green",
-            Inactive: "gray",
-            Pending: "orange",
-            Banned: "red"
-          }
-          return `<span style="color:${colors[value] || 'black'}; font-weight:bold">${value}</span>`
+          const colors = { Active: "green", Inactive: "gray", Pending: "orange", Banned: "red" }
+          return `<span style="color:${colors[value]}; font-weight:bold">${value}</span>`
         }
       },
       {
@@ -57,26 +53,25 @@ export default {
 
     onMounted(() => {
       tableInstance = new Tabulator(tableRef.value, {
-        height: "500px",
         data: tableData,
         layout: "fitColumns",
         responsiveLayout: "collapse",
         pagination: "local",
-        paginationSize: 5,
-        movableColumns: true,
+        paginationSize: 10,
+        selectable: true,
         columns
       })
     })
 
-    function downloadCSV() {
-      if (tableInstance) {
-        tableInstance.download("csv", "data_export.csv")
-      }
+    function logSelected() {
+      const selectedData = tableInstance.getSelectedData()
+      console.log("Selected rows:", selectedData)
+      alert(`Selected ${selectedData.length} rows. See console for details.`)
     }
 
     return {
       table: tableRef,
-      downloadCSV
+      logSelected
     }
   }
 }
