@@ -1,0 +1,82 @@
+spreadsheet architecutre plan - like google sheets, but all open source
+-----------------------------------------------------------------------
+
+1 frontend (what user sees)
+
+1.1 vue 3 (composition api)
+1.1.1 reactive js framework, clean and modern
+1.1.2 great for building fast and modular stuff
+
+1.2 tabulator.js
+1.2.1 spreadsheet style table with editable cells
+1.2.2 open source, no license trap
+
+1.3 pinia
+1.3.1 stores state like current sheet, selected cell, edits etc
+
+1.4 vue router
+1.4.1 lets us do routes like /sheet/abc123
+
+1.5 tailwind css
+1.5.1 utility classes for quick layout and styling
+1.5.2 no bloated css files
+
+1.6 websocket client
+1.6.1 used for live collab, user can see each others edits in realtime
+
+2 backend (logic and data)
+
+2.1 fastapi (python)
+2.1.1 async by default, very fast and minimal
+2.1.2 built in data validation with pydantic, less bugs
+
+2.2 postgresql
+2.2.1 main db, holds all sheets, cells, users, permissions
+2.2.2 supports json and history stuff if needed
+
+2.3 redis
+2.3.1 pubsub used to broadcast updates to websockets
+2.3.2 also useful for caching if app gets heavier
+
+2.4 fastapi websockets
+2.4.1 manages real-time traffic (cell updates, cursors etc)
+2.4.2 integrates with redis to sync across users
+
+2.5 background tasks
+2.5.1 export sheets to csv or xlsx
+2.5.2 autosave jobs, email invites etc
+
+3 infrastructure and comms
+
+3.1 docker
+3.1.1 each service runs in its own container
+3.1.2 makes dev and prod same, no config drift
+
+3.2 docker-compose
+3.2.1 makes it easy to spin everything up local or staging
+
+3.3 nginx
+3.3.1 serves vue dist files
+3.3.2 reverse proxies api + websocket stuff to fastapi
+
+3.4 certbot
+3.4.1 automatic https with letsencrypt
+
+3.5 haproxy
+3.5.1 sits in front of nginx and api
+3.5.2 handles load balancing, routing, and failover if needed
+
+3.6 wireguard
+3.6.1 all vms and containers talk over wireguard network
+3.6.2 encrypted, fast, simple setup
+3.6.3 can route heavy ML/gpu tasks to my home pc over wireguard tunnel (offload from cloud)
+
+4 scaling and performance
+
+4.1 vue frontend is static, can be served by nginx or even cdn
+4.2 fastapi backend is stateless, scales horizontally no prob
+4.3 redis handles realtime sync across all users
+4.4 postgres is reliable and can be optimized for more load
+4.5 haproxy balances traffic if we run multiple api containers
+4.6 wireguard lets us link servers across locations like 1 network
+
